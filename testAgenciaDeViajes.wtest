@@ -1,0 +1,22 @@
+import agenciaDeViajes.*
+
+describe "Parte 1" {
+  test "Un pack nacional sin beneficios vigentes devuelve el mismo precio base." {
+    const nacional = new Packs(precioBase= 10, coordinadorACargo = guia)
+
+    assert.equals(10, nacional.valorFinal())
+  }
+  test "Un pack nacional con 2 beneficios vigentes suma correctamente sus costos al precio base."{
+    const nacional = new Packs(precioBase= 10, coordinadorACargo = guia)
+    nacional.agregarBeneficio(trasladosPrivados)
+    nacional.agregarBeneficio(accesoSalasVip)
+
+    assert.equals(30, nacional.valorFinal())
+  }
+  test "Un pack internacional sin beneficios vigentes calcula correctamente el total con el 20% de recargo."{
+    const internacional = new Internacionales(precioBase= 10, coordinadorACargo = guia, paisDestino = "Argentina")
+    
+
+    assert.equals(12, internacional.valorFinal())
+  }
+}
