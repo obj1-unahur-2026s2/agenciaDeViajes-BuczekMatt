@@ -18,6 +18,9 @@ class Packs {
     var duracionEnDias = 0
     var precioBase
     var coordinadorACargo
+    method coordinadorACargo() {
+      return coordinadorACargo
+    }
     method duracionEnDias() {
       return duracionEnDias
     }
@@ -30,6 +33,7 @@ class Packs {
     method valorFinal() {
       return precioBase + beneficiosEspeciales.filter({ beneficio => beneficio.estaVigente() }).sum({beneficio => beneficio.costo()})
     }
+    method esPremium()
 }
 object trasladosPrivados {
     var estaVigente = true
@@ -92,12 +96,18 @@ class Nacionales inherits Packs {
     method agregarActividad(unaActividad) {
       actividades.add(unaActividad)
     }
+    override method esPremium() {
+      return (self.duracionEnDias() > 10) && (self.coordinadorACargo().estaAltamenteCalificado())
+    }
     
 }
 class Internacionales inherits Packs {
     var paisDestino 
     var cantEscalas = 0
     var esLugarDeInteres = true
+    method cantEscalas() {
+      return cantEscalas
+    }
     method cambiarPaisDestino(unPais) {
       paisDestino = unPais
     }
@@ -115,6 +125,9 @@ class Internacionales inherits Packs {
     }
     override method valorFinal() {
       return super()*1.2
+    }
+    override method esPremium(){
+        return (self.esLugarDeInteres())&&(self.duracionEnDias() > 20)&&(self.cantEscalas()==0)
     }
 }
 

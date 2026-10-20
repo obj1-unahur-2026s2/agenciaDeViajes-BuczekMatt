@@ -2,19 +2,19 @@ import agenciaDeViajes.*
 
 describe "Parte 1" {
   test "Un pack nacional sin beneficios vigentes devuelve el mismo precio base." {
-    const nacional = new Packs(precioBase= 10, coordinadorACargo = guia)
+    const nacional = new Nacionales (precioBase= 10, provDestino="Rio Negro", coordinadorACargo = guia)
 
     assert.equals(10, nacional.valorFinal())
   }
   test "Un pack nacional con 2 beneficios vigentes suma correctamente sus costos al precio base."{
-    const nacional = new Packs(precioBase= 10, coordinadorACargo = guia)
+    const nacional = new Nacionales (precioBase= 10, provDestino="Rio Negro", coordinadorACargo = guia)
     nacional.agregarBeneficio(trasladosPrivados)
     nacional.agregarBeneficio(accesoSalasVip)
 
     assert.equals(30, nacional.valorFinal())
   }
   test "Un pack internacional sin beneficios vigentes calcula correctamente el total con el 20% de recargo."{
-    const internacional = new Internacionales(precioBase= 10, coordinadorACargo = guia, paisDestino = "Argentina")
+    const internacional = new Internacionales(precioBase= 10, coordinadorACargo = guia, paisDestino = "EEUU")
     
 
     assert.equals(12, internacional.valorFinal())
@@ -46,5 +46,28 @@ describe "Parte 2" {
     unAcompaniante.cambiarCantDeViajesRealizados(21)
 
     assert.that(unAcompaniante.estaAltamenteCalificado())
+  }
+}
+
+describe "Parte 3" {
+  test "pack premium nacional, 10 dia de duracion, coordinador altamente calificado" {
+    const guia = new Coordinador ()
+    guia.cambiarCantDeViajesRealizados(21)
+    guia.motivar()
+    
+    const nacional = new Nacionales(precioBase= 10, provDestino="Rio Negro", coordinadorACargo = guia)
+    nacional.cambiarDuracionDeDias(14)
+    
+
+    assert.that(nacional.esPremium())
+  }
+  test "pack premium internacional, es lugar de interes, tiene mas de 20 dias de duracion, sin escalas" {
+    const internacional = new Internacionales(precioBase= 10, coordinadorACargo = guia, paisDestino = "EEUU")
+    internacional.ponerComoLugarDeInteres()
+    internacional.cambiarDuracionDeDias(21)
+    internacional.cambiarCantEscalas(0)
+
+
+    assert.that(internacional.esPremium())
   }
 }
