@@ -18,6 +18,9 @@ class Packs {
     var duracionEnDias = 0
     var precioBase
     var coordinadorACargo
+    method beneficiosEspeciales() {
+      return beneficiosEspeciales
+    }
     method coordinadorACargo() {
       return coordinadorACargo
     }
@@ -87,6 +90,9 @@ object segurosAdicionales {
 class Nacionales inherits Packs {
     const actividades = []
     var provDestino
+    method actividades() {
+      return actividades
+    }
     method cambiarProvinciaDestino(unaProvincia) {
       provDestino = unaProvincia
     }
@@ -183,4 +189,29 @@ object asistenteLogistico {
 }
 object acompaniante {
   
+}
+
+class Provinciales inherits Nacionales{
+    var cantDeCiudadesAVisitar = 0
+    method cantDeCiudadesAVisitar() {
+      return cantDeCiudadesAVisitar
+    }
+    method cambiarCantDeCiudadesAVisitar(unaCantidad) {
+      cantDeCiudadesAVisitar = unaCantidad
+    }
+
+    override method esPremium() {
+      return self.actividades().size()>=4 && cantDeCiudadesAVisitar >= 5
+        && self.beneficiosEspeciales().filter({ beneficio => beneficio.estaVigente() }).size()>=3
+    }
+
+    override method valorFinal() {
+      if (self.esPremium()){
+        return super()*1.05
+      }
+      else{
+        return super()
+      }
+      
+    }
 }

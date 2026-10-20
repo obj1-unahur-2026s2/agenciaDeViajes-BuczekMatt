@@ -2,19 +2,27 @@ import agenciaDeViajes.*
 
 describe "Parte 1" {
   test "Un pack nacional sin beneficios vigentes devuelve el mismo precio base." {
-    const nacional = new Nacionales (precioBase= 10, provDestino="Rio Negro", coordinadorACargo = guia)
-
+    const coordinador = new Coordinador()
+    agencia.cambiarRolAlCoordinador(coordinador, guia)
+    const nacional = new Nacionales (precioBase= 10, provDestino="Rio Negro", coordinadorACargo = coordinador)
+    
     assert.equals(10, nacional.valorFinal())
   }
   test "Un pack nacional con 2 beneficios vigentes suma correctamente sus costos al precio base."{
-    const nacional = new Nacionales (precioBase= 10, provDestino="Rio Negro", coordinadorACargo = guia)
+    const coordinador = new Coordinador()
+    agencia.cambiarRolAlCoordinador(coordinador, guia)
+
+    const nacional = new Nacionales (precioBase= 10, provDestino="Rio Negro", coordinadorACargo = coordinador)
     nacional.agregarBeneficio(trasladosPrivados)
     nacional.agregarBeneficio(accesoSalasVip)
 
     assert.equals(30, nacional.valorFinal())
   }
   test "Un pack internacional sin beneficios vigentes calcula correctamente el total con el 20% de recargo."{
-    const internacional = new Internacionales(precioBase= 10, coordinadorACargo = guia, paisDestino = "EEUU")
+    const coordinador = new Coordinador()
+    agencia.cambiarRolAlCoordinador(coordinador, guia)
+
+    const internacional = new Internacionales(precioBase= 10, coordinadorACargo = coordinador, paisDestino = "EEUU")
     
 
     assert.equals(12, internacional.valorFinal())
@@ -62,12 +70,51 @@ describe "Parte 3" {
     assert.that(nacional.esPremium())
   }
   test "pack premium internacional, es lugar de interes, tiene mas de 20 dias de duracion, sin escalas" {
-    const internacional = new Internacionales(precioBase= 10, coordinadorACargo = guia, paisDestino = "EEUU")
+    const coordinador = new Coordinador()
+    agencia.cambiarRolAlCoordinador(coordinador, guia)
+
+
+    const internacional = new Internacionales(precioBase= 10, coordinadorACargo = coordinador, paisDestino = "EEUU")
     internacional.ponerComoLugarDeInteres()
     internacional.cambiarDuracionDeDias(21)
     internacional.cambiarCantEscalas(0)
 
 
     assert.that(internacional.esPremium())
+  }
+}
+
+describe "Parte 4" {
+  test "pack premium provinciales, 4 actividades, 5 ciudades para visitar con 3 beneficios vigentes " {
+    const coordinador = new Coordinador()
+    agencia.cambiarRolAlCoordinador(coordinador, guia)
+
+    const provinciales = new Provinciales (precioBase= 10, provDestino="Rio Negro", coordinadorACargo = coordinador)
+    provinciales.agregarActividad("Sky")
+    provinciales.agregarActividad("Visitar Centro")
+    provinciales.agregarActividad("Visitar Lagos")
+    provinciales.agregarActividad("Tomar Chocolate Caliente")
+    provinciales.cambiarCantDeCiudadesAVisitar(5)
+    provinciales.agregarBeneficio(trasladosPrivados)
+    provinciales.agregarBeneficio(accesoSalasVip)
+    provinciales.agregarBeneficio(segurosAdicionales)
+
+    assert.that(provinciales.esPremium())
+  }
+  test "pack premium provinciales 5% mas caros" {
+    const coordinador = new Coordinador()
+    agencia.cambiarRolAlCoordinador(coordinador, guia)
+    
+    const provinciales = new Provinciales (precioBase= 10, provDestino="Rio Negro", coordinadorACargo = coordinador)
+    provinciales.agregarActividad("Sky")
+    provinciales.agregarActividad("Visitar Centro")
+    provinciales.agregarActividad("Visitar Lagos")
+    provinciales.agregarActividad("Tomar Chocolate Caliente")
+    provinciales.cambiarCantDeCiudadesAVisitar(5)
+    provinciales.agregarBeneficio(trasladosPrivados)
+    provinciales.agregarBeneficio(accesoSalasVip)
+    provinciales.agregarBeneficio(segurosAdicionales)
+
+    assert.equals(42, provinciales.valorFinal())
   }
 }
