@@ -123,8 +123,17 @@ class Coordinador {
     var estaMotivado = true
     var aniosDeExperiencia = 0
     var rol = guia
+    method aniosDeExperiencia() {
+      return aniosDeExperiencia
+    }
+    method cantViajesRealizados() {
+      return cantViajesRealizados
+    }
     method realizarViaje() {
       cantViajesRealizados+=1
+    }
+    method cambiarCantDeViajesRealizados(unaCantidad) {
+      cantViajesRealizados = unaCantidad
     }
     method estaMotivado() {
       return estaMotivado
@@ -139,7 +148,17 @@ class Coordinador {
         aniosDeExperiencia+=1
     }
     method cambiarRol(unRol) {
-      rol = guia
+      rol = unRol
+    }
+    method estaAltamenteCalificado() {
+      return self.cantViajesRealizados() >= 20 && self.cumpleSuRol()
+    }
+    method cumpleSuRol() {
+      return (rol == guia && self.estaMotivado() || 
+              rol == asistenteLogistico && self.aniosDeExperiencia()>=3 ||
+              rol == acompaniante 
+      )
+
     }
 }
 

@@ -20,3 +20,31 @@ describe "Parte 1" {
     assert.equals(12, internacional.valorFinal())
   }
 }
+
+describe "Parte 2" {
+  test "Un guía motivado con 21 viajes realizados es considerado altamente calificado." {
+    const guia = new Coordinador ()
+    guia.cambiarCantDeViajesRealizados(21)
+    guia.motivar()
+
+    assert.that(guia.estaAltamenteCalificado())
+  }
+  test "Un asistente logístico con menos de 3 años de experiencia no es calificado, aunque tenga muchos viajes." {
+    const asistenteLogistico1 = new Coordinador ()
+    agencia.cambiarRolAlCoordinador(asistenteLogistico1, asistenteLogistico)
+    asistenteLogistico1.cambiarCantDeViajesRealizados(21)
+    asistenteLogistico1.aumentarAnioDeExperiencia()
+    
+
+
+    assert.notThat(asistenteLogistico1.estaAltamenteCalificado())
+  }
+
+  test "Un acompañante con cualquier cantidad de viajes es siempre calificado si supera los 20." {
+    const unAcompaniante = new Coordinador ()
+    agencia.cambiarRolAlCoordinador(unAcompaniante, acompaniante)
+    unAcompaniante.cambiarCantDeViajesRealizados(21)
+
+    assert.that(unAcompaniante.estaAltamenteCalificado())
+  }
+}
